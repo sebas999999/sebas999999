@@ -1,0 +1,38 @@
+using UnityEngine;
+
+public class PlayerController : MonoBehaviour
+{
+    public float speed = 10.0f;
+    public GameObject projectilePrefab;
+
+    void Update()
+    {
+        // Beweging van de speler
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
+        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+        transform.Translate(movement * speed * Time.deltaTime);
+
+        // Schieten van projectielen
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Instantiate(projectilePrefab, transform.position + transform.forward, transform.rotation);
+        }
+    }
+}using UnityEngine;
+
+public class Projectile : MonoBehaviour
+{
+    public float speed = 20.0f;
+
+    void Update()
+    {
+        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        // Vernietig het projectiel bij botsing
+        Destroy(gameObject);
+    }
+}
